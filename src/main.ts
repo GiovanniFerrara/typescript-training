@@ -4,62 +4,122 @@ if (!rootElement) {
   throw new Error("root element not found.");
 }
 
-// Funzioni con parametri opzionali
-function greet(name?: string) {
-  if (name) {
-    return `Hello, ${name}!`;
-  } else {
-    return "Hello!";
+// Definizione di una interfaccia
+interface User {
+  name: string;
+  age: number;
+}
+
+// Implementazione di una interfaccia
+class Employee implements User {
+  name: string;
+  age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
   }
 }
 
-// Funzioni con parametri di default
-function greetWithOptionalArgument(name: string = "World") {
-  return `Hello, ${name}!`;
+const employee = new Employee("John", 30);
+
+employee.name = "John Doe";
+
+// Interfacce con parametri opzionali
+interface Product {
+  id: number;
+  name: string;
+  description?: string;
+  readonly internalId?: string;
 }
 
-// Parametri rest in TypeScript
-function sum(...numbers: number[]): number {
-  let result = 0;
-  for (let number of numbers) {
-    result += number;
+// readonly e private
+class HairDrier implements Product {
+  id: number;
+  name: string;
+  description?: string;
+  readonly internalId?: string;
+
+  constructor(id: number, name: string, description?: string) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.internalId = '123';
   }
 
-  return result;
-}
+  generateId(): HairDrier {
+    this.id = this.secretIdGenerator();
+    return this
+  }
 
-// Function overloading - Sovraccarico di funzioni
-function calculateArea(
-  shape: "square" | "rectangle",
-  ...measurements: number[]
-): number {
-  if (shape === "square") {
-    const side = measurements[0];
-    return side * side;
-  } else if (shape === "rectangle") {
-    // Destructuring array, equivalente a: const base = measurements[0]; const height = measurements[1];
-    const [base, height] = measurements;
-    return base * height;
-  } else {
-    throw new Error("Unsupported geometric shape.");
+
+  getId(): number {
+    return this.id;
+  }
+
+  private secretIdGenerator(): number {
+    return Math.floor(Math.random() * 100);
   }
 }
+
+const hairDrier = new HairDrier(
+  1,
+  "Hair Drier",
+  "A hair drier is a device that blows hot or ambient air over damp hair to speed the evaporation of water to dry the hair."
+);
+
+console.log(hairDrier);
+
+
+// Readonly properties
+interface Point {
+  readonly x: number;
+  readonly y: number;
+}
+
+// Extending interfaces
+interface Animal {
+  name: string;
+}
+
+interface Dog extends Animal {
+  breed: string;
+}
+
+const dog: Dog = {
+  name: "Fido",
+  breed: "Labrador",
+}
+
+// Introduction to Custom Types
+type Day =
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
+
+// Creating and using custom types
+type EmployeeRecord = {
+  id: string;
+  name: string;
+  department: string;
+  daysOff: Day[];
+};
+
+function printEmployeeRecord(emp: EmployeeRecord) {
+  console.log(
+    `ID: ${emp.id}, Name: ${emp.name}, Department: ${emp.department}`
+  );
+}
+
+// Differences and use cases of Interfaces vs Custom Types
+// Interfaces are generally preferred for representing the shape of an object (like classes, function types, and dictionaries)
+// Custom Types are a bit more flexible and can be used for a variety of other things, such as union types, intersection types, etc.
+
 
 rootElement.innerHTML = `
 <h3>Funzioni con parametri opzionali</h3>
-<p>Greet(): ${greet()}</p>
-<p>Greet("John"): ${greet("John")}</p>
-
-<h3>Funzioni con parametri di default</h3>
-<p>GreetWithOptionalArgument(): ${greetWithOptionalArgument()}</p>
-
-<h3>Parametri rest in TypeScript</h3>
-<p>sum(1, 2, 3, 4, 5): ${sum(1, 2, 3, 4, 5)}</p>
-<p>sum(10, 20, 30): ${sum(10, 20, 30)}</p>
-<p>sum(2): ${sum(2)}</p>
-
-<h3>Function overloading - Sovraccarico di funzioni</h3>
-<p>calculateArea("square", 10): ${calculateArea("square", 10)}</p>
-<p>calculateArea("rectangle", 10, 20): ${calculateArea("rectangle", 10, 20)}</p>
 `;
-// <p>calculateArea("circle", 10): ${calculateArea("circle", 10)}</p>
