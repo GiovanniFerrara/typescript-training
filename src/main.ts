@@ -1,39 +1,65 @@
-import { logger } from "./logger";
-
 const rootElement: HTMLElement | null = document.getElementById("root");
 
-if(!rootElement) {
+if (!rootElement) {
   throw new Error("root element not found.");
 }
 
-// Esempio di una funzione che restituisce un valore senza specificare il tipo di ritorno
-function add(number1: number, number2: number ){
-  return number1 + number2; // TypeScript deduce il tipo di ritorno come number
+// Funzioni con parametri opzionali
+function greet(name?: string) {
+  if (name) {
+    return `Hello, ${name}!`;
+  } else {
+    return "Hello!";
+  }
 }
 
-// Esempio di una funzione che restituisce un valore specificando il tipo di ritorno
-function subtract(number1: number, number2: number): number {
-  return number1 - number2;
+// Funzioni con parametri di default
+function greetWithOptionalArgument(name: string = "World") {
+  return `Hello, ${name}!`;
 }
 
-function addMixedTypes(number1: number, number2: string): string {
-  return `${number1}${number2}`; // restituisce una stringa
+// Parametri rest in TypeScript
+function sum(...numbers: number[]): number {
+  let result = 0;
+  for (let number of numbers) {
+    result += number;
+  }
+
+  return result;
 }
 
-// Esempio di una funzione definita come variabile
-let multiply: (x: number, y: number) => number;
-
-// Funzione compatibile con il tipo definito dalla variabile multiply
-multiply = function(x: number, y: number): number {
-  return x * y;
+// Function overloading - Sovraccarico di funzioni
+function calculateArea(
+  shape: "square" | "rectangle",
+  ...measurements: number[]
+): number {
+  if (shape === "square") {
+    const side = measurements[0];
+    return side * side;
+  } else if (shape === "rectangle") {
+    // Destructuring array, equivalente a: const base = measurements[0]; const height = measurements[1];
+    const [base, height] = measurements;
+    return base * height;
+  } else {
+    throw new Error("Unsupported geometric shape.");
+  }
 }
 
-type returnedTypeAdd = ReturnType<typeof add> // number
-type returnedTypeSubtract = ReturnType<typeof subtract> // number
-type returnedTypeAddMixedTypes = ReturnType<typeof addMixedTypes> // string
-type returnedTypeMultiply = ReturnType<typeof multiply> // number
+rootElement.innerHTML = `
+<h3>Funzioni con parametri opzionali</h3>
+<p>Greet(): ${greet()}</p>
+<p>Greet("John"): ${greet("John")}</p>
 
-rootElement.innerHTML = `<p>Add: ${add(2, 3)}</p>
-                         <p>Subtract: ${subtract(5, 2)}</p>
-                         <p>Add Mixed Types: ${addMixedTypes(2, '3')}</p>
-                         <p>Multiply: ${multiply(2, 3)}</p>`;
+<h3>Funzioni con parametri di default</h3>
+<p>GreetWithOptionalArgument(): ${greetWithOptionalArgument()}</p>
+
+<h3>Parametri rest in TypeScript</h3>
+<p>sum(1, 2, 3, 4, 5): ${sum(1, 2, 3, 4, 5)}</p>
+<p>sum(10, 20, 30): ${sum(10, 20, 30)}</p>
+<p>sum(2): ${sum(2)}</p>
+
+<h3>Function overloading - Sovraccarico di funzioni</h3>
+<p>calculateArea("square", 10): ${calculateArea("square", 10)}</p>
+<p>calculateArea("rectangle", 10, 20): ${calculateArea("rectangle", 10, 20)}</p>
+`;
+// <p>calculateArea("circle", 10): ${calculateArea("circle", 10)}</p>

@@ -1,70 +1,118 @@
-# Funzioni e Tipi di Funzioni in TypeScript
+# Parametri Opzionali, Parametri di Default, Parametri Rest e Sovraccarico di Funzioni in TypeScript
 
-Questo documento fornisce un'analisi del codice TypeScript, concentrandosi sulle funzioni e sui tipi di funzioni.
+Questo documento fornisce un'analisi del codice TypeScript, concentrandosi su come gestire parametri opzionali, parametri di default, parametri rest e sovraccarico di funzioni.
 
-## Funzioni
+## Parametri Opzionali
 
-In TypeScript, le funzioni possono essere definite nello stesso modo di JavaScript, ma TypeScript fornisce funzionalità aggiuntive relative agli argomenti della funzione e ai tipi di ritorno.
+In TypeScript, i parametri opzionali di una funzione possono essere definiti utilizzando il simbolo "?". Se un parametro opzionale non viene fornito quando la funzione viene chiamata, il suo valore sarà `undefined`.
 
-### Funzione Add
+### Funzione Greet
 
-La funzione `add` è un esempio di funzione che restituisce un valore senza specificare il tipo di ritorno. TypeScript è in grado di dedurre il tipo di ritorno in base al contenuto della funzione.
+La funzione `greet` ha un parametro opzionale `name`. Se `name` viene fornito, restituisce un saluto personalizzato. Se `name` non viene fornito, restituisce un saluto generico.
 
 ```tsx
-function add(number1: number, number2: number ){
-  return number1 + number2; // TypeScript infers the return type as number
+function greet(name?: string) {
+  if (name) {
+    return `Hello, ${name}!`;
+  } else {
+    return "Hello!";
+  }
 }
 ```
 
-### Funzione Subtract
+## Parametri di Default
 
-La funzione `subtract` è un esempio di dichiarazione esplicita del tipo di ritorno di una funzione. In questo caso, la funzione restituisce un numero.
+I parametri di default permettono di specificare un valore predefinito per un parametro che sarà utilizzato se il parametro non viene fornito quando la funzione viene chiamata.
+
+### Funzione GreetWithOptionalArgument
+
+La funzione `greetWithOptionalArgument` ha un parametro di default `name` che predefinisce il valore "World" se non viene fornito un argomento.
 
 ```tsx
-function subtract(number1: number, number2: number): number {
-  return number1 - number2;
+function greetWithOptionalArgument(name: string = "World") {
+  return `Hello, ${name}!`;
 }
 ```
 
-### Funzione AddMixedTypes
+## Parametri Rest
 
-La funzione `addMixedTypes` prende un numero e una stringa come parametri, ma restituisce una stringa.
+I parametri rest permettono di passare un numero qualsiasi di argomenti a una funzione. Nel nostro esempio, la funzione `sum` utilizza un parametro rest per sommare un numero arbitrario di numeri.
 
 ```tsx
-function addMixedTypes(number1: number, number2: string): string {
-  return `${number1}${number2}`; // returns a string
+function sum(...numbers: number[]): number {
+  let result = 0;
+  for (let number of numbers) {
+    result += number;
+  }
+
+  return result;
 }
 ```
 
-## Tipi di Funzione
+## Sovraccarico di Funzioni
 
-Il tipo di una funzione è definito dai tipi dei parametri e dal tipo di ritorno.
+Il sovraccarico di funzioni in TypeScript permette di specificare più firme per una funzione e di fornire un'implementazione che può gestire diversi tipi di argomenti.
 
-### Funzione Multiply
+### Funzione CalculateArea
 
-Nell'esempio `multiply`, il tipo di funzione è definito come una funzione che prende due numeri come parametri e restituisce un numero.
-
-```tsx
-let multiply: (x: number, y: number) => number;
-```
-
-La funzione `multiply` viene poi definita in modo che corrisponda al tipo di funzione.
+La funzione `calculateArea` accetta una stringa che indica la forma geometrica e un array di numeri che rappresentano le misure. A seconda del valore del primo argomento, la funzione calcola l'area di un quadrato o di un rettangolo.
 
 ```tsx
-multiply = function(x: number, y: number): number {
-  return x * y;
+function calculateArea(
+  shape: "square" | "rectangle",
+  ...measurements: number[]
+): number {
+  if (shape === "square") {
+    const side = measurements[0];
+    return side * side;
+  } else if (shape === "rectangle") {
+    const [base, height] = measurements;
+    return base * height;
+  } else {
+    throw new Error("Unsupported geometric shape.");
+  }
 }
 ```
+## Risultati della Funzione
 
-## ReturnType
+Infine, il codice chiama tutte le funzioni definite e mostra i risultati nel elemento HTML root. Di seguito, vediamo come vengono chiamate le funzioni e quali risultati producono.
 
-Il tipo di utilità `ReturnType` può essere utilizzato per ottenere il tipo di ritorno di una funzione. Nel nostro codice, definiamo quattro tipi utilizzando `ReturnType`.
+### Funzioni con parametri opzionali
 
 ```tsx
-type returnedTypeAdd = ReturnType<typeof add> // number
-type returnedTypeSubtract = ReturnType<typeof subtract> // number
-type returnedTypeAddMixedTypes = ReturnType<typeof addMixedTypes> // string
-type returnedTypeMultiply = ReturnType<typeof multiply> // number
+<h3>Funzioni con parametri opzionali</h3>
+<p>Greet(): ${greet()}</p>
+<p>Greet("John"): ${greet("John")}</p>
 ```
 
-Questi tipi corrispondono rispettivamente ai tipi di ritorno delle funzioni `add`, `subtract`, `addMixedTypes` e `multiply`.
+Quando la funzione `greet` viene chiamata senza argomenti, restituisce "Hello!". Quando viene chiamata con un argomento, usa quell'argomento nel saluto.
+
+### Funzioni con parametri di default
+
+```tsx
+<h3>Funzioni con parametri di default</h3>
+<p>GreetWithOptionalArgument(): ${greetWithOptionalArgument()}</p>
+```
+
+Quando la funzione `greetWithOptionalArgument` viene chiamata senza argomenti, usa "World" come valore predefinito per `name`.
+
+### Parametri rest in TypeScript
+
+```tsx
+<h3>Parametri rest in TypeScript</h3>
+<p>sum(1, 2, 3, 4, 5): ${sum(1, 2, 3, 4, 5)}</p>
+<p>sum(10, 20, 30): ${sum(10, 20, 30)}</p>
+<p>sum(2): ${sum(2)}</p>
+```
+
+La funzione `sum` può essere chiamata con qualsiasi numero di argomenti numerici. Somma tutti i numeri forniti e restituisce il risultato.
+
+### Function overloading - Sovraccarico di funzioni
+
+```tsx
+<h3>Function overloading - Sovraccarico di funzioni</h3>
+<p>calculateArea("square", 10): ${calculateArea("square", 10)}</p>
+<p>calculateArea("rectangle", 10, 20): ${calculateArea("rectangle", 10, 20)}</p>
+```
+
+La funzione `calculateArea` può calcolare l'area di un quadrato o di un rettangolo, a seconda del valore del primo argomento. Se viene fornito "square", usa il primo numero nell'array `measurements` per calcolare l'area del quadrato. Se viene fornito "rectangle", usa i primi due numeri nell'array `measurements` per calcolare l'area del rettangolo. Se viene fornita una forma non supportata, la funzione lancia un errore.
