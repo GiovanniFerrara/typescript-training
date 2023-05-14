@@ -1,42 +1,50 @@
-## Configurazione del file tsconfig.json
-Il file tsconfig.json è utilizzato per configurare le opzioni del compilatore TypeScript.
-Per creare il file tsconfig.json, eseguire il comando seguente:
-```
-tsc --init
-```
-Il file tsconfig.json contiene le seguenti opzioni:
-- **target**: specifica la versione di ECMAScript che il compilatore TypeScript deve utilizzare per generare il codice JavaScript. Il valore di default è ES3.
-- **module**: specifica il sistema di moduli che il compilatore TypeScript deve utilizzare per generare il codice JavaScript. Il valore di default è CommonJS.
-- **outDir**: specifica la directory in cui il compilatore TypeScript deve posizionare i file JavaScript generati. Il valore di default è ./dist.
-- **rootDir**: specifica la directory radice in cui il compilatore TypeScript deve ricercare i file di origine. Il valore di default è ./src.
-- **strict**: abilita tutte le opzioni di controllo di tipo. Il valore di default è false.
-- **noImplicitAny**: non consente l'uso di any come tipo per le variabili e i membri delle classi. Il valore di default è false.
-- **strictNullChecks**: non consente l'assegnazione di null e undefined a un tipo non esplicitamente dichiarato. Il valore di default è false.
-- **noUnusedLocals**: segnala un errore se una variabile locale non viene utilizzata. Il valore di default è false.
-- **noUnusedParameters**: segnala un errore se un parametro non viene utilizzato. Il valore di default è false.
-- **noImplicitReturns**: segnala un errore se una funzione non restituisce un valore. Il valore di default è false.
-- **esModuleInterop**: consente l'importazione di moduli CommonJS in modo che possano essere utilizzati in un contesto ES2015. Il valore di default è false.
-- **sourceMap**: genera i file di mappatura sorgente. Il valore di default è false.
-- **experimentalDecorators**: abilita le decorazioni per le classi e i membri delle classi. Il valore di default è false.
-- **emitDecoratorMetadata**: abilita la generazione di metadati per le decorazioni. Il valore di default è false.
-- **baseUrl**: specifica la directory di base per risolvere i moduli. Il valore di default è ./src.
-- **paths**: specifica i percorsi dei moduli da risolvere. Il valore di default è {}.
-- **include**: specifica un elenco di modelli di file che il compilatore TypeScript deve includere. Il valore di default è ["src/**/*"].
-- **exclude**: specifica un elenco di modelli di file che il compilatore TypeScript deve escludere. Il valore di default è ["node_modules", "dist"].
+### Cos'è un file bundler e come farlo funzionare con un progetto HTML
 
-### Esempio di compilazione di semplice progretto TypeScript
+Parcel è un bundler di applicazioni web che offre funzionalità di hot module replacement (HMR) out of the box. Di seguito sono riportati i passaggi per configurare Parcel con il tuo progetto.
 
-Per compilare un semplice progetto TypeScript, modificare il file tsconfig.json
+**1. Installazione di Node.js e npm**
 
-```
-   outDir: "./build",
+Prima di tutto, avrai bisogno di Node.js e npm (Node Package Manager) installati sul tuo computer. Puoi scaricarli da [qui](https://nodejs.org/).
+
+**2. Installazione di Parcel**
+
+Apri il terminale e naviga fino alla tua cartella di progetto, poi esegui il seguente comando per installare Parcel:
+
+```bash
+npm install -D parcel-bundler
 ```
 
-e poi eseguire il comando seguente:
+**3. Configurazione di Parcel**
 
+Non c'è bisogno di una configurazione complessa con Parcel! Devi solo modificare il tuo file HTML per assicurarti che punti al tuo file di ingresso JavaScript. Ad esempio:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tua Pagina</title>
+</head>
+<body>
+    <!-- Il tuo contenuto HTML qui -->
+
+    <!-- Includi il tuo JavaScript qui -->
+    <script src="src/tuo-file.js"></script>
+</body>
+</html>
 ```
-tsc --watch
+
+**4. Esecuzione di Parcel**
+
+Dopo aver configurato il tuo file HTML, puoi eseguire Parcel sulla tua pagina HTML principale dal terminale:
+
+```bash
+npx parcel index.html
 ```
 
-##
+Parcel avvierà un server di sviluppo locale e si occuperà di ricaricare la pagina ogni volta che salvi un file.
 
+**5. Aggiornamento dei file**
+
+Ora, ogni volta che modifichi un file nel tuo progetto e lo salvi, Parcel ricaricherà automaticamente la pagina nel tuo browser.
+
+Ricorda: Parcel si occupa anche di risolvere le dipendenze per te. Quindi, se il tuo file JavaScript importa altri file o moduli, Parcel li includerà automaticamente nel bundle.
