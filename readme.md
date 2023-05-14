@@ -1,50 +1,150 @@
-### Cos'è un file bundler e come farlo funzionare con un progetto HTML
+# Tipi di Dati in TypeScript
 
-Parcel è un bundler di applicazioni web che offre funzionalità di hot module replacement (HMR) out of the box. Di seguito sono riportati i passaggi per configurare Parcel con il tuo progetto.
+Questo documento fornisce un'analisi del codice TypeScript, concentrandosi sui diversi tipi di dati che TypeScript supporta.
 
-**1. Installazione di Node.js e npm**
+## Tipi di dati primitivi
 
-Prima di tutto, avrai bisogno di Node.js e npm (Node Package Manager) installati sul tuo computer. Puoi scaricarli da [qui](https://nodejs.org/).
+In TypeScript, i tipi di dati primitivi includono `boolean`, `number`, `string`, `null` e `undefined`. Tutto il resto è un oggetto.
 
-**2. Installazione di Parcel**
+### Boolean
 
-Apri il terminale e naviga fino alla tua cartella di progetto, poi esegui il seguente comando per installare Parcel:
+Il tipo `boolean` rappresenta un valore booleano, che può essere `true` o `false`.
 
-```bash
-npm install -D parcel-bundler
+```tsx
+const isCompleted: boolean = true;
+const isLoggedIn: boolean = false;
 ```
 
-**3. Configurazione di Parcel**
+### Number
 
-Non c'è bisogno di una configurazione complessa con Parcel! Devi solo modificare il tuo file HTML per assicurarti che punti al tuo file di ingresso JavaScript. Ad esempio:
+Il tipo `number` rappresenta un valore numerico.
 
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Tua Pagina</title>
-</head>
-<body>
-    <!-- Il tuo contenuto HTML qui -->
-
-    <!-- Includi il tuo JavaScript qui -->
-    <script src="src/tuo-file.js"></script>
-</body>
-</html>
+```tsx
+const count: number = 10;
+const pi: number = 3.14;
 ```
 
-**4. Esecuzione di Parcel**
+### String
 
-Dopo aver configurato il tuo file HTML, puoi eseguire Parcel sulla tua pagina HTML principale dal terminale:
+Il tipo `string` rappresenta una sequenza di caratteri.
 
-```bash
-npx parcel index.html
+```tsx
+const message: string = "Ciao mondo!";
+const personName = "Mario";
 ```
 
-Parcel avvierà un server di sviluppo locale e si occuperà di ricaricare la pagina ogni volta che salvi un file.
+## Array
 
-**5. Aggiornamento dei file**
+In TypeScript, gli array sono oggetti che possono contenere più valori di un determinato tipo. Gli array vengono definiti utilizzando la sintassi `tipo[]` o `Array<tipo>`.
 
-Ora, ogni volta che modifichi un file nel tuo progetto e lo salvi, Parcel ricaricherà automaticamente la pagina nel tuo browser.
+```tsx
+const numbers: number[] = [1, 2, 3, 4, 5];
+const fruits: Array<string> = ["mela", "banana", "arancia"];
+```
 
-Ricorda: Parcel si occupa anche di risolvere le dipendenze per te. Quindi, se il tuo file JavaScript importa altri file o moduli, Parcel li includerà automaticamente nel bundle.
+## Tuple
+
+Le tuple sono come gli array, ma possono contenere elementi di tipi diversi.
+
+```tsx
+const person: [string, number, boolean] = ["Mario", 25, true];
+```
+
+## Enum
+
+`Enum` è un tipo speciale che permette di definire un insieme di costanti nominali.
+
+```tsx
+enum Color {
+  Red,
+  Green,
+  Blue
+}
+const favoriteColor: Color = Color.Blue;
+```
+
+## Unknown
+
+Il tipo `unknown` rappresenta un valore di un tipo sconosciuto.
+Va utilizzato con cautela, poiché può essere assegnato a qualsiasi tipo di valore.
+È necessario controllare il tipo di un valore unknown prima di utilizzarlo.
+
+```tsx
+const value: unknown = 10;
+if (typeof value === "number") {
+  const result: number = value + 5;
+}
+```
+
+## Any
+
+Il tipo `any` permette di assegnare qualsiasi tipo di valore a una variabile.
+Va evitato quanto più possibile. 
+Può essere utile quando si lavora con codice legacy o quando una libreria di terze parti non può essere tipizzata in altro modo.
+
+La differenza con `unknown` è che `any` non richiede un controllo di tipo.
+
+```tsx
+let dynamicValue: any = "Hello";
+dynamicValue = 10;
+dynamicValue = true;
+```
+
+## Void
+
+Il tipo `void` è generalmente utilizzato per funzioni che non restituiscono un valore.
+
+```tsx
+function sayHello(): void {
+  console.log("Ciao!");
+}
+```
+
+## Null e Undefined
+
+`Null` e `undefined` sono tipi speciali che hanno un solo valore possibile.
+
+```tsx
+const nullValue: null = null;
+const undefinedValue: undefined = undefined;
+```
+
+## Never
+
+Il tipo `never` rappresenta il tipo di valori che non si verificano mai.
+
+```tsx
+function throwError(message: string): never {
+  throw new Error(message);
+}
+```
+
+## Object
+
+Il tipo `object` rappresenta un tipo non primitivo.
+
+```tsx
+const personObject: object = {
+  name: "Mario",
+  age: 25,
+};
+```
+
+## Annotazioni di tipo e quando usarle
+
+In TypeScript, si può utilizzare l'annotazione di tipo per specificare il tipo di una variabile, di un parametro di funzione o del valore restituito da una funzione.
+
+
+```tsx
+let age: number = 25;
+let firstName: string = "Mario";
+let isStudent: boolean = true;
+
+function greet(name: string): void {
+  console.log(`Ciao ${name}!`);
+}
+
+function add(a: number, b: number): number {
+  return a + b;
+}
+```
