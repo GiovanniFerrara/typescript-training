@@ -1,118 +1,98 @@
-# Parametri Opzionali, Parametri di Default, Parametri Rest e Sovraccarico di Funzioni in TypeScript
+# TypeScript - Interfacce, Tipi personalizzati e Classi
 
-Questo documento fornisce un'analisi del codice TypeScript, concentrandosi su come gestire parametri opzionali, parametri di default, parametri rest e sovraccarico di funzioni.
+## Definizione di una interfaccia
 
-## Parametri Opzionali
-
-In TypeScript, i parametri opzionali di una funzione possono essere definiti utilizzando il simbolo "?". Se un parametro opzionale non viene fornito quando la funzione viene chiamata, il suo valore sarà `undefined`.
-
-### Funzione Greet
-
-La funzione `greet` ha un parametro opzionale `name`. Se `name` viene fornito, restituisce un saluto personalizzato. Se `name` non viene fornito, restituisce un saluto generico.
+In TypeScript, una interfaccia è un modo per definire un contratto su una struttura di oggetti. Gli oggetti che implementano un'interfaccia devono aderire alla struttura definita dall'interfaccia. 
 
 ```tsx
-function greet(name?: string) {
-  if (name) {
-    return `Hello, ${name}!`;
-  } else {
-    return "Hello!";
+interface User {
+  name: string;
+  age: number;
+}
+```
+
+In questo esempio, `User` è un'interfaccia che richiede due proprietà: `name` e `age`, entrambe di tipo stringa e numero rispettivamente.
+
+## Implementazione di una interfaccia
+
+Una classe può implementare un'interfaccia per garantire che aderisca a una specifica struttura. Se la classe non implementa tutte le proprietà dell'interfaccia, TypeScript segnalerà un errore.
+
+```tsx
+class Employee implements User {
+  name: string;
+  age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
   }
 }
 ```
 
-## Parametri di Default
+In questo esempio, la classe `Employee` implementa l'interfaccia `User`. Di conseguenza, la classe deve avere le proprietà `name` e `age`.
 
-I parametri di default permettono di specificare un valore predefinito per un parametro che sarà utilizzato se il parametro non viene fornito quando la funzione viene chiamata.
+## Interfacce con proprietà opzionali e di sola lettura
 
-### Funzione GreetWithOptionalArgument
-
-La funzione `greetWithOptionalArgument` ha un parametro di default `name` che predefinisce il valore "World" se non viene fornito un argomento.
+In TypeScript, è possibile definire proprietà opzionali nelle interfacce, utilizzando il simbolo `?`. Le proprietà di sola lettura, invece, possono essere definite utilizzando la parola chiave `readonly`.
 
 ```tsx
-function greetWithOptionalArgument(name: string = "World") {
-  return `Hello, ${name}!`;
+interface Product {
+  id: number;
+  name: string;
+  description?: string;
+  readonly internalId?: string;
 }
 ```
 
-## Parametri Rest
+## Proprietà private nelle classi
 
-I parametri rest permettono di passare un numero qualsiasi di argomenti a una funzione. Nel nostro esempio, la funzione `sum` utilizza un parametro rest per sommare un numero arbitrario di numeri.
+Le proprietà private in una classe non possono essere accedute o modificate al di fuori della classe stessa. Possono essere utilizzate per incapsulare la logica specifica della classe.
 
 ```tsx
-function sum(...numbers: number[]): number {
-  let result = 0;
-  for (let number of numbers) {
-    result += number;
-  }
-
-  return result;
+private secretIdGenerator(): number {
+    return Math.floor(Math.random() * 100);
 }
 ```
 
-## Sovraccarico di Funzioni
+## Estensione di interfacce
 
-Il sovraccarico di funzioni in TypeScript permette di specificare più firme per una funzione e di fornire un'implementazione che può gestire diversi tipi di argomenti.
-
-### Funzione CalculateArea
-
-La funzione `calculateArea` accetta una stringa che indica la forma geometrica e un array di numeri che rappresentano le misure. A seconda del valore del primo argomento, la funzione calcola l'area di un quadrato o di un rettangolo.
+Un'interfaccia può estendere un'altra interfaccia, ereditandone tutte le proprietà.
 
 ```tsx
-function calculateArea(
-  shape: "square" | "rectangle",
-  ...measurements: number[]
-): number {
-  if (shape === "square") {
-    const side = measurements[0];
-    return side * side;
-  } else if (shape === "rectangle") {
-    const [base, height] = measurements;
-    return base * height;
-  } else {
-    throw new Error("Unsupported geometric shape.");
-  }
+interface Dog extends Animal {
+  breed: string;
 }
 ```
-## Risultati della Funzione
 
-Infine, il codice chiama tutte le funzioni definite e mostra i risultati nel elemento HTML root. Di seguito, vediamo come vengono chiamate le funzioni e quali risultati producono.
+## Introduzione ai Tipi personalizzati
 
-### Funzioni con parametri opzionali
-
-```tsx
-<h3>Funzioni con parametri opzionali</h3>
-<p>Greet(): ${greet()}</p>
-<p>Greet("John"): ${greet("John")}</p>
-```
-
-Quando la funzione `greet` viene chiamata senza argomenti, restituisce "Hello!". Quando viene chiamata con un argomento, usa quell'argomento nel saluto.
-
-### Funzioni con parametri di default
+I tipi personalizzati sono un modo per definire tipi di dati specifici che possono essere utilizzati nel codice.
 
 ```tsx
-<h3>Funzioni con parametri di default</h3>
-<p>GreetWithOptionalArgument(): ${greetWithOptionalArgument()}</p>
+type Day =
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
 ```
 
-Quando la funzione `greetWithOptionalArgument` viene chiamata senza argomenti, usa "World" come valore predefinito per `name`.
+## Creazione e utilizzo dei Tipi personalizzati
 
-### Parametri rest in TypeScript
+Una volta definito un tipo personalizzato, può essere utilizzato come qualsiasi altro tipo.
 
 ```tsx
-<h3>Parametri rest in TypeScript</h3>
-<p>sum(1, 2, 3, 4, 5): ${sum(1, 2, 3, 4, 5)}</p>
-<p>sum(10, 20, 30): ${sum(10, 20, 30)}</p>
-<p>sum(2): ${sum(2)}</p>
+type EmployeeRecord = {
+  id: string;
+  name: string;
+  department: string;
+  daysOff: Day[];
+};
 ```
 
-La funzione `sum` può essere chiamata con qualsiasi numero di argomenti numerici. Somma tutti i numeri forniti e restituisce il risultato.
+## Differenze e casi d'uso di Interfacce vs Tipi personalizzati
 
-### Function overloading - Sovraccarico di funzioni
-
-```tsx
-<h3>Function overloading - Sovraccarico di funzioni</h3>
-<p>calculateArea("square", 10): ${calculateArea("square", 10)}</p>
-<p>calculateArea("rectangle", 10, 20): ${calculateArea("rectangle", 10, 20)}</p>
-```
-
-La funzione `calculateArea` può calcolare l'area di un quadrato o di un rettangolo, a seconda del valore del primo argomento. Se viene fornito "square", usa il primo numero nell'array `measurements` per calcolare l'area del quadrato. Se viene fornito "rectangle", usa i primi due numeri nell'array `measurements` per calcolare l'area del rettangolo. Se viene fornita una forma non supportata, la funzione lancia un errore.
+Le interfacce sono generalmente preferite per rappresentare la forma di un oggetto (come classi, tipi di funzioni e dizionari/oggetti), mentre i Tipi personalizzati sono un po' più flessibili e possono essere utilizzati per una varietà di altre cose, come i tipi di unione, i tipi di intersezione.
+Inoltre le interfacce possono essere estese, mentre i tipi personalizzati no.
