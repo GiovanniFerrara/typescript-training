@@ -1,0 +1,15 @@
+{
+  "name": "1-ts-setup",
+  "version": "1.0.0",
+  "description": "Installazione di TypeScript: Per installare TypeScript, è necessario avere Node.js installato nel proprio sistema. Seguire i passaggi seguenti:",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.0.4"
+  }
+}
