@@ -121,5 +121,15 @@ function printEmployeeRecord(emp: EmployeeRecord) {
 
 
 rootElement.innerHTML = `
-<h3>Funzioni con parametri opzionali</h3>
+  <div>
+    <p>Employee: ${employee.name}</p>
+    <p>Hair Drier: ${hairDrier.name}</p>
+    <p>Dog: ${dog.name}</p>
+    <p>Employee Record: ${printEmployeeRecord({
+      id: "1",
+      name: "John",
+      department: "IT",
+      daysOff: ["Monday", "Tuesday"], 
+    })}</p>
+  </div>
 `;
