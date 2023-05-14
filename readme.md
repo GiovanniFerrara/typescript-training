@@ -1,98 +1,76 @@
-# TypeScript - Interfacce, Tipi personalizzati e Classi
+# Lezione su Intersezioni, Unioni, Unioni Discriminate in TypeScript
 
-## Definizione di una interfaccia
+In questa lezione, ci concentreremo sui tipi di intersezione, sui tipi di unione e sulle unioni discriminate in TypeScript.
 
-In TypeScript, una interfaccia è un modo per definire un contratto su una struttura di oggetti. Gli oggetti che implementano un'interfaccia devono aderire alla struttura definita dall'interfaccia. 
+## Tipi di Intersezione
 
-```tsx
-interface User {
-  name: string;
-  age: number;
-}
-```
+I tipi di intersezione consentono di combinare più tipi in uno. Ciò consente di aggiungere tipi esistenti per ottenere un singolo tipo che ha tutte le caratteristiche di cui hai bisogno.
 
-In questo esempio, `User` è un'interfaccia che richiede due proprietà: `name` e `age`, entrambe di tipo stringa e numero rispettivamente.
-
-## Implementazione di una interfaccia
-
-Una classe può implementare un'interfaccia per garantire che aderisca a una specifica struttura. Se la classe non implementa tutte le proprietà dell'interfaccia, TypeScript segnalerà un errore.
-
-```tsx
-class Employee implements User {
-  name: string;
-  age: number;
-
-  constructor(name: string, age: number) {
-    this.name = name;
-    this.age = age;
-  }
-}
-```
-
-In questo esempio, la classe `Employee` implementa l'interfaccia `User`. Di conseguenza, la classe deve avere le proprietà `name` e `age`.
-
-## Interfacce con proprietà opzionali e di sola lettura
-
-In TypeScript, è possibile definire proprietà opzionali nelle interfacce, utilizzando il simbolo `?`. Le proprietà di sola lettura, invece, possono essere definite utilizzando la parola chiave `readonly`.
-
-```tsx
-interface Product {
-  id: number;
-  name: string;
-  description?: string;
-  readonly internalId?: string;
-}
-```
-
-## Proprietà private nelle classi
-
-Le proprietà private in una classe non possono essere accedute o modificate al di fuori della classe stessa. Possono essere utilizzate per incapsulare la logica specifica della classe.
-
-```tsx
-private secretIdGenerator(): number {
-    return Math.floor(Math.random() * 100);
-}
-```
-
-## Estensione di interfacce
-
-Un'interfaccia può estendere un'altra interfaccia, ereditandone tutte le proprietà.
-
-```tsx
-interface Dog extends Animal {
-  breed: string;
-}
-```
-
-## Introduzione ai Tipi personalizzati
-
-I tipi personalizzati sono un modo per definire tipi di dati specifici che possono essere utilizzati nel codice.
-
-```tsx
-type Day =
-  | "Monday"
-  | "Tuesday"
-  | "Wednesday"
-  | "Thursday"
-  | "Friday"
-  | "Saturday"
-  | "Sunday";
-```
-
-## Creazione e utilizzo dei Tipi personalizzati
-
-Una volta definito un tipo personalizzato, può essere utilizzato come qualsiasi altro tipo.
-
-```tsx
-type EmployeeRecord = {
+```typescript
+type Employee = {
   id: string;
   name: string;
-  department: string;
-  daysOff: Day[];
+};
+
+type Worker = {
+  company: string;
+};
+
+type EmployeeWorker = Employee & Worker;
+
+let ew: EmployeeWorker = {
+  id: "1",
+  name: "John",
+  company: "ACME Corp"
 };
 ```
 
-## Differenze e casi d'uso di Interfacce vs Tipi personalizzati
+In questo esempio, `EmployeeWorker` è un tipo di intersezione che combina le proprietà sia di `Employee` che di `Worker`. Una variabile di questo tipo deve quindi avere tutte le proprietà definite in entrambi i tipi.
 
-Le interfacce sono generalmente preferite per rappresentare la forma di un oggetto (come classi, tipi di funzioni e dizionari/oggetti), mentre i Tipi personalizzati sono un po' più flessibili e possono essere utilizzati per una varietà di altre cose, come i tipi di unione, i tipi di intersezione.
-Inoltre le interfacce possono essere estese, mentre i tipi personalizzati no.
+## Tipi di Unione
+
+Un tipo di unione è un tipo formato da due o più altri tipi, che rappresenta i valori che possono essere uno qualsiasi di questi tipi.
+
+```typescript
+type StringOrNumber = string | number;
+
+let a: StringOrNumber = "hello"; // ok
+let b: StringOrNumber = 10; // ok
+```
+
+In questo esempio, `StringOrNumber` è un tipo di unione che può essere sia una stringa che un numero.
+
+## Unioni Discriminate
+
+Un modo comune di lavorare con i tipi di unione è avere un singolo campo che utilizza tipi letterali che puoi usare per far sì che TypeScript restringa il tipo esatto del tipo di unione. Questo è chiamato unione discriminata perché TypeScript discrimina tra i tipi usando il campo `kind`.
+
+```typescript
+interface Circle {
+  kind: "circle";
+  radius: number;
+}
+
+interface Square {
+  kind: "square";
+  sideLength: number;
+}
+
+type Shape = Circle | Square;
+
+function getArea(shape: Shape): number {
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+    case "square":
+      return shape.sideLength ** 2;
+  }
+}
+
+let circle: Circle = { kind: "circle", radius: 10 };
+let square: Square = { kind: "square", sideLength: 5 };
+
+console.log(getArea(circle)); // output: 314.1592653589793
+console.log(getArea(square)); // output: 25
+```
+
+In questo esempio, `Shape` è un tipo di unione che può essere sia un `Circle` che un `Square`. L'unione è discriminata dal campo `kind`, che permette a TypeScript di sapere quale sia il tipo esatto quando è necessario.
