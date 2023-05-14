@@ -71,13 +71,13 @@ const hairDrier = new HairDrier(
 console.log(hairDrier);
 
 
-// Readonly properties
+// proprietà Readonly
 interface Point {
   readonly x: number;
   readonly y: number;
 }
 
-// Extending interfaces
+// Estensione interfaccia
 interface Animal {
   name: string;
 }
@@ -91,7 +91,7 @@ const dog: Dog = {
   breed: "Labrador",
 }
 
-// Introduction to Custom Types
+// Introduzione ai tipi custom
 type Day =
   | "Monday"
   | "Tuesday"
@@ -101,7 +101,7 @@ type Day =
   | "Saturday"
   | "Sunday";
 
-// Creating and using custom types
+// Crezione e uso di un tipo custom
 type EmployeeRecord = {
   id: string;
   name: string;
@@ -114,11 +114,6 @@ function printEmployeeRecord(emp: EmployeeRecord) {
     `ID: ${emp.id}, Name: ${emp.name}, Department: ${emp.department}`
   );
 }
-
-// Differences and use cases of Interfaces vs Custom Types
-// Interfaces are generally preferred for representing the shape of an object (like classes, function types, and dictionaries)
-// Custom Types are a bit more flexible and can be used for a variety of other things, such as union types, intersection types, etc.
-
 
 rootElement.innerHTML = `
   <div>
