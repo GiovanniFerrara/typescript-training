@@ -1,4 +1,14 @@
-Installazione di TypeScript:
+### Come seguire il corso
+
+Il corso è strutturato in diverse sezioni sull'apprendimento di Typescript, ognuna di esse può essere consultata in modo indipendente.
+```
+git branch
+```
+Per seguire il corso è necessario avere una conoscenza base di Javascript.
+Per seguire il corso è necessario avere installato Node.js (meglio se version node 16).
+
+### Installazione di Typescript
+
 Per installare TypeScript, è necessario avere Node.js installato nel proprio sistema. Seguire i passaggi seguenti:
 
 1. Aprire il terminale o la finestra della riga di comando. Digitare il seguente comando per inizializzare un progetto npm:
