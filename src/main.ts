@@ -1,67 +1,50 @@
-const rootElement: HTMLElement | null = document.getElementById("root");
+// Record
+// L'utilità Record ci permette di creare un tipo di oggetto dove le chiavi delle proprietà sono stringhe specificate e i valori sono di un certo tipo.
 
-if (!rootElement) {
-  throw new Error("root element not found.");
-}
+type AnimalAges = Record<'cat' | 'dog', number>;
+let ages: AnimalAges = { cat: 2, dog: 3 };
 
-// Intersection types
-type Employee = {
-  company: string;
-};
+// Required
+// L'utilità Required rende tutte le proprietà di un tipo obbligatorie.
 
-type Person = {
-  id: string;
+interface Employee {
   name: string;
-};
+  age?: number;
+  department: string;
+}
 
-type PersonEmployed = Employee & Person;
-
-let personEmployed: PersonEmployed = {
-  id: "1",
+type RequiredEmployee = Required<Employee>;
+let employee1: RequiredEmployee = {
   name: "John",
-  company: "ACME Corp"
+  age: 30, // ora questa proprietà è obbligatoria
+  department: "IT"
 };
 
-// Union types
-type StringOrNumber = string | number;
+// Readonly
+// L'utilità Readonly rende tutte le proprietà di un tipo di sola lettura.
 
-let a: StringOrNumber = "hello"; // ok
-let b: StringOrNumber = 10; // ok
+type ReadonlyEmployee = Readonly<Employee>;
+let employee2: ReadonlyEmployee = {
+  name: "John",
+  age: 30,
+  department: "IT"
+};
+// dipendente2.eta = 31; // Questa riga produrrebbe un errore TypeScript.
 
-// Discriminated Unions
-enum ShapeKind {
-  Circle,
-  Square
-}
-interface Circle {
-  kind: ShapeKind.Circle;
-  radius: number;
-}
+// Exclude
+// L'utilità Exclude esclude certi tipi da un altro tipo.
 
-interface Square {
-  kind: ShapeKind.Square;
-  sideLength: number;
-}
+type Animal = 'cat' | 'dog' | 'horse';
+type DomesticAnimal = Exclude<Animal, 'horse'>; // 'cat' | 'dog'
 
-type Shape = Circle | Square;
+// Extract
+// L'utilità Extract estrae certi tipi da un altro tipo.
 
-function getArea(shape: Shape): number {
-  switch (shape.kind) {
-    case ShapeKind.Circle:
-      return Math.PI * shape.radius ** 2;
-    case ShapeKind.Square:
-      return shape.sideLength ** 2;
-  }
-}
+type AnimalAgain = 'cat' | 'dog' | 'horse';
+type DomesticAnimalAgain = Extract<Animal, 'cat' | 'dog'>; // 'cat' | 'dog'
 
-const circle: Circle = { kind: ShapeKind.Circle, radius: 10 };
-const square: Square = { kind: ShapeKind.Square, sideLength: 5 };
+// NonNullable
+// L'utilità NonNullable esclude null e undefined da un tipo.
 
-rootElement.innerHTML = `
-  <div>
-    <h1>Typescript Playground</h1>
-    <p> personEmployed:  ${JSON.stringify(personEmployed)} </p>
-    <p> getArea(circle):  ${getArea(circle)} </p>
-    <p> getArea(square):  ${getArea(square)} </p>
-  </div>
-`;
+type NullableString = string | null | undefined;
+type StringNonNullable = NonNullable<NullableString>; // string

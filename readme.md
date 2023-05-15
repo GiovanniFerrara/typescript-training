@@ -1,76 +1,82 @@
-# Lezione su Intersezioni, Unioni, Unioni Discriminate in TypeScript
+# Built-In TypeScript Types: Record, Required, Readonly, Exclude, Extract, NonNullable
 
-In questa lezione, ci concentreremo sui tipi di intersezione, sui tipi di unione e sulle unioni discriminate in TypeScript.
+## Record
 
-## Tipi di Intersezione
-
-I tipi di intersezione consentono di combinare più tipi in uno. Ciò consente di aggiungere tipi esistenti per ottenere un singolo tipo che ha tutte le caratteristiche di cui hai bisogno.
+Il tipo di utilità Record in TypeScript ci permette di creare un tipo di oggetto dove le chiavi delle proprietà sono stringhe specificate e i valori sono di un certo tipo. Ad esempio:
 
 ```typescript
-type Employee = {
-  id: string;
+type AnimalAges = Record<'cat' | 'dog', number>;
+let ages: AnimalAges = { cat: 2, dog: 3 };
+```
+
+In questo esempio, stiamo dicendo che il tipo `AnimalAges` è un oggetto con le chiavi specificate ('cat' e 'dog') e i valori di tipo `number`.
+
+## Required
+
+L'utilità Required in TypeScript rende tutte le proprietà di un tipo obbligatorie. Ad esempio:
+
+```typescript
+interface Employee {
   name: string;
-};
+  age?: number;
+  department: string;
+}
 
-type Worker = {
-  company: string;
-};
-
-type EmployeeWorker = Employee & Worker;
-
-let ew: EmployeeWorker = {
-  id: "1",
+type RequiredEmployee = Required<Employee>;
+let employee1: RequiredEmployee = {
   name: "John",
-  company: "ACME Corp"
+  age: 30, // ora questa proprietà è obbligatoria
+  department: "IT"
 };
 ```
 
-In questo esempio, `EmployeeWorker` è un tipo di intersezione che combina le proprietà sia di `Employee` che di `Worker`. Una variabile di questo tipo deve quindi avere tutte le proprietà definite in entrambi i tipi.
+In questo esempio, stiamo creando un nuovo tipo `RequiredEmployee` che rende tutte le proprietà dell'interfaccia `Employee` obbligatorie. Quindi, anche se `age` era opzionale in `Employee`, è obbligatoria in `RequiredEmployee`.
 
-## Tipi di Unione
+## Readonly
 
-Un tipo di unione è un tipo formato da due o più altri tipi, che rappresenta i valori che possono essere uno qualsiasi di questi tipi.
-
-```typescript
-type StringOrNumber = string | number;
-
-let a: StringOrNumber = "hello"; // ok
-let b: StringOrNumber = 10; // ok
-```
-
-In questo esempio, `StringOrNumber` è un tipo di unione che può essere sia una stringa che un numero.
-
-## Unioni Discriminate
-
-Un modo comune di lavorare con i tipi di unione è avere un singolo campo che utilizza tipi letterali che puoi usare per far sì che TypeScript restringa il tipo esatto del tipo di unione. Questo è chiamato unione discriminata perché TypeScript discrimina tra i tipi usando il campo `kind`.
+L'utilità Readonly in TypeScript rende tutte le proprietà di un tipo di sola lettura. Ad esempio:
 
 ```typescript
-interface Circle {
-  kind: "circle";
-  radius: number;
-}
-
-interface Square {
-  kind: "square";
-  sideLength: number;
-}
-
-type Shape = Circle | Square;
-
-function getArea(shape: Shape): number {
-  switch (shape.kind) {
-    case "circle":
-      return Math.PI * shape.radius ** 2;
-    case "square":
-      return shape.sideLength ** 2;
-  }
-}
-
-let circle: Circle = { kind: "circle", radius: 10 };
-let square: Square = { kind: "square", sideLength: 5 };
-
-console.log(getArea(circle)); // output: 314.1592653589793
-console.log(getArea(square)); // output: 25
+type ReadonlyEmployee = Readonly<Employee>;
+let employee2: ReadonlyEmployee = {
+  name: "John",
+  age: 30,
+  department: "IT"
+};
+// employee2.age = 31; // Questa riga risulterebbe in un errore TypeScript.
 ```
 
-In questo esempio, `Shape` è un tipo di unione che può essere sia un `Circle` che un `Square`. L'unione è discriminata dal campo `kind`, che permette a TypeScript di sapere quale sia il tipo esatto quando è necessario.
+In questo esempio, stiamo creando un nuovo tipo `ReadonlyEmployee` che rende tutte le proprietà dell'interfaccia `Employee` di sola lettura. Quindi, non possiamo cambiare il valore di `age` dopo che è stato impostato.
+
+## Exclude
+
+L'utilità Exclude in TypeScript esclude certi tipi da un altro tipo. Ad esempio:
+
+```typescript
+type Animal = 'cat' | 'dog' | 'horse';
+type DomesticAnimal = Exclude<Animal, 'horse'>; // 'cat' | 'dog'
+```
+
+In questo esempio, stiamo creando un nuovo tipo `DomesticAnimal` che include solo i tipi in `Animal` che non sono 'horse'.
+
+## Extract
+
+L'utilità Extract in TypeScript estrae certi tipi da un altro tipo. Ad esempio:
+
+```typescript
+type AnimalAgain = 'cat' | 'dog' | 'horse';
+type DomesticAnimalAgain = Extract<Animal, 'cat' | 'dog'>; // 'cat' | 'dog'
+```
+
+In questo esempio, stiamo creando un nuovo tipo `DomesticAnimalAgain` che include solo i tipi in `Animal` che sono anche 'cat' o 'dog'.
+
+## NonNullable
+
+L'utilità NonNullable in TypeScript esclude `null` e `undefined` da un tipo. Ad esempio:
+
+```typescript
+type NullableString = string | null | undefined;
+type String = NonNullable<NullableString>; // string
+```
+
+In questo esempio, stiamo creando un nuovo tipo `String` che include solo i tipi in `NullableString` che non sono `null` o `undefined`. Quindi, il tipo
