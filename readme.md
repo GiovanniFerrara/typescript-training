@@ -1,76 +1,72 @@
-# Lezione su Intersezioni, Unioni, Unioni Discriminate in TypeScript
+# Built-In TypeScript Types: Partial, Pick, Omit, Promise
 
-In questa lezione, ci concentreremo sui tipi di intersezione, sui tipi di unione e sulle unioni discriminate in TypeScript.
+## Partial
 
-## Tipi di Intersezione
-
-I tipi di intersezione consentono di combinare più tipi in uno. Ciò consente di aggiungere tipi esistenti per ottenere un singolo tipo che ha tutte le caratteristiche di cui hai bisogno.
+Il tipo `Partial` in TypeScript rende tutte le proprietà di un tipo come opzionali. Ad esempio:
 
 ```typescript
-type Employee = {
-  id: string;
+interface Employee {
   name: string;
-};
+  age: number;
+  department: string;
+}
 
-type Worker = {
-  company: string;
-};
-
-type EmployeeWorker = Employee & Worker;
-
-let ew: EmployeeWorker = {
-  id: "1",
+let employee1: Partial<Employee> = {
   name: "John",
-  company: "ACME Corp"
 };
 ```
 
-In questo esempio, `EmployeeWorker` è un tipo di intersezione che combina le proprietà sia di `Employee` che di `Worker`. Una variabile di questo tipo deve quindi avere tutte le proprietà definite in entrambi i tipi.
+In questo esempio, stiamo creando una variabile `employee1` di tipo `Partial<Employee>`. Questo significa che `employee1` può avere qualsiasi combinazione delle proprietà dell'interfaccia `Employee`, ma nessuna di esse è obbligatoria.
 
-## Tipi di Unione
+## Pick
 
-Un tipo di unione è un tipo formato da due o più altri tipi, che rappresenta i valori che possono essere uno qualsiasi di questi tipi.
-
-```typescript
-type StringOrNumber = string | number;
-
-let a: StringOrNumber = "hello"; // ok
-let b: StringOrNumber = 10; // ok
-```
-
-In questo esempio, `StringOrNumber` è un tipo di unione che può essere sia una stringa che un numero.
-
-## Unioni Discriminate
-
-Un modo comune di lavorare con i tipi di unione è avere un singolo campo che utilizza tipi letterali che puoi usare per far sì che TypeScript restringa il tipo esatto del tipo di unione. Questo è chiamato unione discriminata perché TypeScript discrimina tra i tipi usando il campo `kind`.
+Il tipo `Pick` in TypeScript ci permette di scegliere specifiche proprietà da un tipo. Ad esempio:
 
 ```typescript
-interface Circle {
-  kind: "circle";
-  radius: number;
-}
+type EmployeeNameAndAge = Pick<Employee, "name" | "age">;
 
-interface Square {
-  kind: "square";
-  sideLength: number;
-}
-
-type Shape = Circle | Square;
-
-function getArea(shape: Shape): number {
-  switch (shape.kind) {
-    case "circle":
-      return Math.PI * shape.radius ** 2;
-    case "square":
-      return shape.sideLength ** 2;
-  }
-}
-
-let circle: Circle = { kind: "circle", radius: 10 };
-let square: Square = { kind: "square", sideLength: 5 };
-
-console.log(getArea(circle)); // output: 314.1592653589793
-console.log(getArea(square)); // output: 25
+let employee2: EmployeeNameAndAge = {
+  name: "John",
+  age: 30,
+};
 ```
 
-In questo esempio, `Shape` è un tipo di unione che può essere sia un `Circle` che un `Square`. L'unione è discriminata dal campo `kind`, che permette a TypeScript di sapere quale sia il tipo esatto quando è necessario.
+In questo esempio, stiamo creando un nuovo tipo `EmployeeNameAndAge` che ha solo le proprietà `name` e `age` dell'interfaccia `Employee`.
+
+## Omit
+
+Il tipo `Omit` in TypeScript ci permette di rimuovere specifiche proprietà da un tipo. Ad esempio:
+
+```typescript
+type EmployeeWithoutAge = Omit<Employee, "age">;
+
+let employee3: EmployeeWithoutAge = {
+  name: "John",
+  department: "IT",
+};
+```
+
+In questo esempio, stiamo creando un nuovo tipo `EmployeeWithoutAge` che ha tutte le proprietà dell'interfaccia `Employee` tranne `age`.
+
+## Promise
+
+Il tipo `Promise` in TypeScript rappresenta un valore che potrebbe non essere ancora disponibile. Ad esempio:
+
+```typescript
+function getEmployee(id: string): Promise<Employee> {
+  return new Promise((resolve, reject) => {
+    // Simulare un'operazione asincrona come il recupero di dati da un'API
+    setTimeout(() => {
+      resolve({
+        name: "John",
+        age: 30,
+        department: "IT",
+      });
+    }, 2000);
+  });
+}
+
+getEmployee("1").then((employee) => console.log(employee));
+```
+
+In questo esempio, stiamo creando una funzione `getEmployee` che restituisce una `Promise<Employee>`. Questo significa che la funzione restituirà eventualmente un `Employee`, ma non immediatamente. Utilizziamo quindi la funzione `.then()` per gestire il valore quando è disponibile.

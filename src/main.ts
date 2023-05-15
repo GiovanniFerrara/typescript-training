@@ -1,67 +1,46 @@
-const rootElement: HTMLElement | null = document.getElementById("root");
+// Partial
 
-if (!rootElement) {
-  throw new Error("root element not found.");
-}
-
-// Intersection types
-type Employee = {
-  company: string;
-};
-
-type Person = {
-  id: string;
+interface Employee {
   name: string;
-};
+  age: number;
+  department: string;
+}
 
-type PersonEmployed = Employee & Person;
-
-let personEmployed: PersonEmployed = {
-  id: "1",
+let employee1: Partial<Employee> = {
   name: "John",
-  company: "ACME Corp"
 };
 
-// Union types
-type StringOrNumber = string | number;
+// Pick
 
-let a: StringOrNumber = "hello"; // ok
-let b: StringOrNumber = 10; // ok
+type EmployeeNameAndAge = Pick<Employee, "name" | "age">;
 
-// Discriminated Unions
-enum ShapeKind {
-  Circle,
-  Square
+let employee2: EmployeeNameAndAge = {
+  name: "John",
+  age: 30,
+};
+
+// Omit
+
+type EmployeeWithoutAge = Omit<Employee, "age">;
+
+let employee3: EmployeeWithoutAge = {
+  name: "John",
+  department: "IT",
+};
+
+// Promise
+
+function getEmployee(id: string): Promise<Employee> {
+  return new Promise((resolve, reject) => {
+  // Simulare un'operazione asincrona come il recupero di dati da un'API
+    setTimeout(() => {
+      resolve({
+        name: "John",
+        age: 30,
+        department: "IT",
+      });
+    }, 2000);
+  });
 }
-interface Circle {
-  kind: ShapeKind.Circle;
-  radius: number;
-}
 
-interface Square {
-  kind: ShapeKind.Square;
-  sideLength: number;
-}
-
-type Shape = Circle | Square;
-
-function getArea(shape: Shape): number {
-  switch (shape.kind) {
-    case ShapeKind.Circle:
-      return Math.PI * shape.radius ** 2;
-    case ShapeKind.Square:
-      return shape.sideLength ** 2;
-  }
-}
-
-const circle: Circle = { kind: ShapeKind.Circle, radius: 10 };
-const square: Square = { kind: ShapeKind.Square, sideLength: 5 };
-
-rootElement.innerHTML = `
-  <div>
-    <h1>Typescript Playground</h1>
-    <p> personEmployed:  ${JSON.stringify(personEmployed)} </p>
-    <p> getArea(circle):  ${getArea(circle)} </p>
-    <p> getArea(square):  ${getArea(square)} </p>
-  </div>
-`;
+getEmployee("1").then((employee) => console.log(employee));
