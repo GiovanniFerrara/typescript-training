@@ -2,7 +2,10 @@
 
 Crea una funzione `fetchData` che prende un URL come parametro. Questa funzione dovrebbe essere in grado di fare una richiesta GET a quell'URL e restituire i dati. La funzione dovrebbe gestire anche eventuali errori di rete o di risposta non valida.
 
+
 Inoltre, definisci un tipo o un'interfaccia per i dati che ti aspetti di ricevere dal tuo endpoint. Per esempio, se stai facendo una richiesta all'endpoint di un post su JSONPlaceholder, dovresti creare un tipo o un'interfaccia `Post`.
+
+Puoi usare: 'https://jsonplaceholder.typicode.com/posts/1' come URL per testare la tua funzione.
 Per rendere l'esercizio più interessante, implementeremo una funzione di fetch con ritardi casuali per simulare le variazioni nelle risposte di rete.
 
 **Compito per Casa 2: Interfacce, Classi, Private, Readonly**
