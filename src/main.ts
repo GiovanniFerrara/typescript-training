@@ -14,6 +14,7 @@ interface User {
 class Employee implements User {
   name: string;
   age: number;
+  readonly id: string = "123";
 
   constructor(name: string, age: number) {
     this.name = name;
@@ -27,7 +28,6 @@ employee.name = "John Doe";
 
 // Interfacce con parametri opzionali
 interface Product {
-  id: number;
   name: string;
   description?: string;
   readonly internalId?: string;
@@ -35,25 +35,29 @@ interface Product {
 
 // readonly e private
 class HairDrier implements Product {
-  id: number;
+  private id?: number;
   name: string;
   description?: string;
   readonly internalId?: string;
 
-  constructor(id: number, name: string, description?: string) {
-    this.id = id;
+  constructor(name: string, description?: string) {
+    this.id = undefined;
     this.name = name;
     this.description = description;
     this.internalId = '123';
   }
 
+  
   generateId(): HairDrier {
     this.id = this.secretIdGenerator();
     return this
   }
 
+  getIsNew(): boolean {
+    return this.id === undefined;
+  }
 
-  getId(): number {
+  getId(): number | undefined {
     return this.id;
   }
 
@@ -62,8 +66,10 @@ class HairDrier implements Product {
   }
 }
 
+const fono1 = new HairDrier("Fono", "Fono per capelli");
+
+
 const hairDrier = new HairDrier(
-  1,
   "Hair Drier",
   "A hair drier is a device that blows hot or ambient air over damp hair to speed the evaporation of water to dry the hair."
 );
