@@ -62,20 +62,6 @@ async function fetchComments(postId: number): Promise<Comment[]> {
   return comments;
 }
 
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  // Qui potresti aggiungere altre proprietà in base alla risposta dell'API
-}
-
-async function fetchUser(id: number): Promise<User> {
-  const response = await fetchData(`https://jsonplaceholder.typicode.com/users/${id}`);
-  const user: User = await response.json();
-  return user;
-}
-
 interface Post {
   userId: number;
   id: number;
@@ -105,7 +91,7 @@ async function runAll () {
   const comments = await fetchComments(1);
   const postsWithComments = mapCommentsToPosts(posts, comments);
 
-  console.log(posts);
-  console.log(comments);
-  console.log(postsWithComments);
+  console.log({posts, comments, postsWithComments});
 }
+
+runAll();
