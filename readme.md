@@ -1,74 +1,29 @@
-##Esercizio 1: Tipizzazione di una funzione**
+##Interfacce, Classi, Private e Readonly in TypeScript**
 
-Considera la seguente funzione JavaScript:
+###Esercizio 1: Interfacce e Classi**
 
-```javascript
-function saluta(nome) {
-  return "Ciao, " + nome;
-}
-```
+In questo esercizio, il tuo obiettivo è creare un'interfaccia e una classe in TypeScript che rappresentano un "Utente".
 
-Converti questa funzione in TypeScript aggiungendo tipi appropriati.
+1. Inizia definendo un'interfaccia `IUser` con le seguenti proprietà:
+    - id: number
+    - username: string
+    - email: string
 
-##Esercizio 2: Funzione con oggetto come parametro**
+2. Poi, crea una classe `User` che implementa l'interfaccia `IUser`. La classe dovrebbe avere un costruttore che accetta un oggetto con le proprietà `id`, `username`, e `email`.
 
-Considera la seguente funzione JavaScript:
+**Esercizio 2: Metodi Privati e Proprietà Readonly**
 
-```javascript
-function dettagliLibro(libro) {
-  return libro.titolo + " scritto da " + libro.autore;
-}
-```
+Ora, estenderemo la classe `User` dall'esercizio precedente.
 
-Converti questa funzione in TypeScript aggiungendo tipi appropriati. Definisci un'interfaccia per l'oggetto `libro`.
+1. Aggiungi una nuova proprietà `password` alla classe `User`. Questa proprietà dovrebbe essere privata, il che significa che non può essere accessibile o modificabile al di fuori della classe.
 
-## Esercizio 3: Funzione di fetch con tipi
+2. Aggiungi un metodo privato `encryptPassword` che prende una password come stringa e restituisce una versione "criptata" della password (per questo esercizio, puoi semplicemente restituire la stringa originale seguita da "encrypted").
 
-Per questo esercizio, il tuo obiettivo è creare una funzione TypeScript che fa una richiesta GET all'endpoint dei post su JSONPlaceholder (`https://jsonplaceholder.typicode.com/posts`) e restituisce i dati.
+3. Modifica il costruttore della classe `User` per accettare anche una password. Il costruttore dovrebbe chiamare il metodo `encryptPassword` per criptare la password prima di assegnarla alla proprietà `password`.
 
-Inizia definendo un'interfaccia per un post. Un post dovrebbe avere le seguenti proprietà:
-```
-- userId: number
-- id: number
-- title: string
-- body: string
-```
-Poi, utilizza `fetch` per ottenere i dati dal server. Ricordati di tipizzare correttamente la risposta.
+4. Infine, aggiungi una proprietà `readonly` alla classe `User` chiamata `registrationDate`. Questa proprietà dovrebbe essere impostata al momento della creazione dell'oggetto `User` e non dovrebbe mai cambiare dopo. La proprietà `readonly` dovrebbe essere un oggetto `Date` che rappresenta il momento in cui l'utente è stato creato.
 
-## Esercizio 4: Funzione di fetch per un singolo post
+**Ricorda:**
 
-Ora, crea una funzione TypeScript che prende un ID di post come parametro e fa una richiesta GET all'endpoint di un singolo post su JSONPlaceholder (`https://jsonplaceholder.typicode.com/posts/{id}`). La funzione dovrebbe restituire i dati del post.
-
-## Esercizio 5: Funzione di fetch per i commenti di un post
-
-Il tuo obiettivo per questo esercizio è creare una funzione TypeScript che prende un ID di post come parametro e fa una richiesta GET all'endpoint dei commenti di un post su JSONPlaceholder (`https://jsonplaceholder.typicode.com/posts/{id}/comments`). La funzione dovrebbe restituire i dati dei commenti.
-
-Prima di iniziare, definisci un'interfaccia per un commento. Un commento dovrebbe avere le seguenti proprietà:
-```
-- postId: number
-- id: number
-- name: string
-- email: string
-- body: string
-```
-## Esercizio 6: Mappare i commenti ai post di appartenenza
-
-Per questo esercizio, il tuo obiettivo è creare una funzione TypeScript che, dato un array di post e un array di commenti, restituisce un nuovo array di post dove ogni post include i suoi commenti correlati.
-
-Inizia definendo le interfacce per un post e un commento, se non lo hai già fatto nei precedenti esercizi. Un post dovrebbe avere le seguenti proprietà:
-```
-- userId: number
-- id: number
-- title: string
-- body: string
-```
-Un commento dovrebbe avere le seguenti proprietà:
-```
-- postId: number
-- id: number
-- name: string
-- email: string
-- body: string
-```
-La funzione dovrebbe prendere due parametri: un array di post e un array di commenti. Dovrebbe restituire un array di post, dove ogni post è un oggetto che include una nuova proprietà comments contenente un array con i commenti correlati.
-
+- Un metodo o una proprietà privata in una classe TypeScript può essere preceduta dalla keyword `private`. Questo rende il metodo o la proprietà inaccessibile al di fuori della classe.
+- Una proprietà `readonly` in una classe TypeScript può essere preceduta dalla keyword `readonly`. Questo impedisce che la proprietà venga modificata dopo la creazione dell'oggetto.
