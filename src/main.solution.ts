@@ -1,3 +1,5 @@
+import { FetchError, IFetchError, fetchData } from "./utils";
+
 function saluta(nome: string): string {
   return "Ciao, " + nome;
 }
@@ -21,14 +23,25 @@ interface Post {
 }
 
 async function fetchPosts(): Promise<Post[]> {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-  const posts: Post[] = await response.json();
-  return posts;
+  try {
+    const response = await fetchData('https://jsonplaceholder.typicode.com/posts');
+    const posts: Post[] = await response.json();
+    return posts;
+  } catch(error) {
+    // Opzionale instanceof per controllare il tipo dell'errore, dato che non è stato ancora spiegato.
+    // la stessa cosa si dovrebbe fare con gli altri esempi
+    if(error instanceof FetchError) {
+     console.log(error.message, error.status)
+    }
+
+    console.log(error);
+    return []
+  }
 }
 
 
 async function fetchPost(id: number): Promise<Post> {
-  const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  const response = await fetchData(`https://jsonplaceholder.typicode.com/posts/${id}`);
   const post: Post = await response.json();
   return post;
 }
@@ -44,7 +57,7 @@ interface Comment {
 
 
 async function fetchComments(postId: number): Promise<Comment[]> {
-  const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`);
+  const response = await fetchData(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`);
   const comments: Comment[] = await response.json();
   return comments;
 }
@@ -58,7 +71,7 @@ interface User {
 }
 
 async function fetchUser(id: number): Promise<User> {
-  const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+  const response = await fetchData(`https://jsonplaceholder.typicode.com/users/${id}`);
   const user: User = await response.json();
   return user;
 }
@@ -85,4 +98,14 @@ function mapCommentsToPosts(posts: Post[], comments: Comment[]): Post[] {
     ...post,
     comments: comments.filter(comment => comment.postId === post.id),
   }));
+}
+
+async function runAll () {
+  const posts = await fetchPosts();
+  const comments = await fetchComments(1);
+  const postsWithComments = mapCommentsToPosts(posts, comments);
+
+  console.log(posts);
+  console.log(comments);
+  console.log(postsWithComments);
 }
