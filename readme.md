@@ -1,74 +1,23 @@
-##Esercizio 1: Tipizzazione di una funzione**
+**Compito per Casa 1: Funzioni Avanzate e Data Fetching**
 
-Considera la seguente funzione JavaScript:
+Crea una funzione `fetchData` che prende un URL come parametro. Questa funzione dovrebbe essere in grado di fare una richiesta GET a quell'URL e restituire i dati. La funzione dovrebbe gestire anche eventuali errori di rete o di risposta non valida.
 
-```javascript
-function saluta(nome) {
-  return "Ciao, " + nome;
-}
-```
+Inoltre, definisci un tipo o un'interfaccia per i dati che ti aspetti di ricevere dal tuo endpoint. Per esempio, se stai facendo una richiesta all'endpoint di un post su JSONPlaceholder, dovresti creare un tipo o un'interfaccia `Post`.
+Per rendere l'esercizio più interessante, implementeremo una funzione di fetch con ritardi casuali per simulare le variazioni nelle risposte di rete.
 
-Converti questa funzione in TypeScript aggiungendo tipi appropriati.
+**Compito per Casa 2: Interfacce, Classi, Private, Readonly**
 
-##Esercizio 2: Funzione con oggetto come parametro**
+Crea una classe `BankAccount` che rappresenta un conto bancario. Questa classe dovrebbe avere le seguenti proprietà:
 
-Considera la seguente funzione JavaScript:
+- `accountNumber`: un numero di conto unico (stringa).
+- `accountHolder`: il nome del titolare del conto (stringa).
+- `balance`: il saldo attuale del conto (numero). Questa proprietà dovrebbe essere privata.
+- `accountOpenedDate`: la data in cui il conto è stato aperto (oggetto Date). Questa proprietà dovrebbe essere readonly e impostata al momento della creazione dell'oggetto.
 
-```javascript
-function dettagliLibro(libro) {
-  return libro.titolo + " scritto da " + libro.autore;
-}
-```
+La classe dovrebbe avere i seguenti metodi:
 
-Converti questa funzione in TypeScript aggiungendo tipi appropriati. Definisci un'interfaccia per l'oggetto `libro`.
+- `deposit(amount: number)`: deposita un importo nel conto (aggiunge l'importo al saldo).
+- `withdraw(amount: number)`: preleva un importo dal conto (sottrae l'importo dal saldo). Questo metodo dovrebbe restituire un errore se l'importo è superiore al saldo attuale.
+- `getBalance()`: restituisce il saldo attuale del conto. Questo è l'unico modo per accedere al saldo, dato che la proprietà `balance` è privata.
 
-## Esercizio 3: Funzione di fetch con tipi
-
-Per questo esercizio, il tuo obiettivo è creare una funzione TypeScript che fa una richiesta GET all'endpoint dei post su JSONPlaceholder (`https://jsonplaceholder.typicode.com/posts`) e restituisce i dati.
-
-Inizia definendo un'interfaccia per un post. Un post dovrebbe avere le seguenti proprietà:
-```
-- userId: number
-- id: number
-- title: string
-- body: string
-```
-Poi, utilizza `fetch` per ottenere i dati dal server. Ricordati di tipizzare correttamente la risposta.
-
-## Esercizio 4: Funzione di fetch per un singolo post
-
-Ora, crea una funzione TypeScript che prende un ID di post come parametro e fa una richiesta GET all'endpoint di un singolo post su JSONPlaceholder (`https://jsonplaceholder.typicode.com/posts/{id}`). La funzione dovrebbe restituire i dati del post.
-
-## Esercizio 5: Funzione di fetch per i commenti di un post
-
-Il tuo obiettivo per questo esercizio è creare una funzione TypeScript che prende un ID di post come parametro e fa una richiesta GET all'endpoint dei commenti di un post su JSONPlaceholder (`https://jsonplaceholder.typicode.com/posts/{id}/comments`). La funzione dovrebbe restituire i dati dei commenti.
-
-Prima di iniziare, definisci un'interfaccia per un commento. Un commento dovrebbe avere le seguenti proprietà:
-```
-- postId: number
-- id: number
-- name: string
-- email: string
-- body: string
-```
-## Esercizio 6: Mappare i commenti ai post di appartenenza
-
-Per questo esercizio, il tuo obiettivo è creare una funzione TypeScript che, dato un array di post e un array di commenti, restituisce un nuovo array di post dove ogni post include i suoi commenti correlati.
-
-Inizia definendo le interfacce per un post e un commento, se non lo hai già fatto nei precedenti esercizi. Un post dovrebbe avere le seguenti proprietà:
-```
-- userId: number
-- id: number
-- title: string
-- body: string
-```
-Un commento dovrebbe avere le seguenti proprietà:
-```
-- postId: number
-- id: number
-- name: string
-- email: string
-- body: string
-```
-La funzione dovrebbe prendere due parametri: un array di post e un array di commenti. Dovrebbe restituire un array di post, dove ogni post è un oggetto che include una nuova proprietà comments contenente un array con i commenti correlati.
-
+Ricorda di utilizzare le keyword `private` e `readonly` dove necessario per soddisfare i requisiti. Sei anche incoraggiato a creare un'interfaccia `IBankAccount` che la classe `BankAccount` implementerà.
