@@ -1,21 +1,39 @@
-import './math.namespace'
-
-import MathModule from './math.module';
-import { sum } from './math.module';
+import * as yup from "yup";
 
 const rootElement: HTMLElement | null = document.getElementById("root");
 
-if(!rootElement) {
+if (!rootElement) {
   throw new Error("root element not found.");
 }
 
-console.log(window.MyMath.sum(1, 2));
+function validateUser(name: string, age: number) {
+  const schema = yup.object().shape({
+    name: yup.string().required(),
+    age: yup.number().required().positive().integer(),
+  });
 
-console.log(MathModule.sum(1, 2));
+  return schema
+    .validate({
+      name,
+      age,
+    })
+}
 
+const form = document.querySelector("form") as HTMLFormElement;
+const name = document.querySelector("#username") as HTMLInputElement;
+const age = document.querySelector("#age") as HTMLInputElement;
+const resultMessage = document.querySelector(
+  "#resul-message"
+) as HTMLParagraphElement;
 
-rootElement.innerHTML = `
-  <p>MyMath.sum(1, 2) = ${window.MyMath.sum(1, 2)}</p>
-  <p>MathModule.sum(1, 2) = ${MathModule.sum(1, 2)}</p>
-  <p>sum(1, 2) = ${sum(1, 2)}</p>
-`;
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const nameValue = name.value;
+  const ageValue = parseInt(age.value);
+
+    validateUser(nameValue, ageValue).then(() => {
+      resultMessage.innerText = "Success";
+    }).catch(() => {
+    resultMessage.innerText = "validation failed";
+    });
+});
