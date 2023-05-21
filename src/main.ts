@@ -1,8 +1,16 @@
 // Record
 // L'utilità Record ci permette di creare un tipo di oggetto dove le chiavi delle proprietà sono stringhe specificate e i valori sono di un certo tipo.
 
-type AnimalAges = Record<'cat' | 'dog', number>;
-let ages: AnimalAges = { cat: 2, dog: 3 };
+type CatOrDog = 'cat' | 'dog';
+
+type AnimalAges = Record<CatOrDog, number>;
+
+// Equivalentemente a:
+type AnimalAgesWithKeyValue = {
+  [key in 'cat' | 'dog']: number;
+};
+
+let ages: AnimalAgesWithKeyValue = { cat: 2, dog: 3 };
 
 // Required
 // L'utilità Required rende tutte le proprietà di un tipo obbligatorie.
