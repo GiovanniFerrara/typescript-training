@@ -1,41 +1,57 @@
-import * as yup from "yup";
-
-const rootElement: HTMLElement | null = document.getElementById("root");
-
-if (!rootElement) {
-  throw new Error("root element not found.");
+// Utilizzo della struttura try-catch per gestire errori sincroni
+function exampleTryCatch() {
+  try {
+    // Blocco di codice potenzialmente pericoloso
+    let value = riskyOperation();
+  } catch (error) {
+    // Gestione dell'errore
+    console.error(error);
+  }
 }
 
-function validateUser(name: string, age: number) {
-  // cliccando su yup.object().shape si apre la definizione di yup
-  // cliccando su yup.string().required() si apre la definizione di yup.string
-  const schema = yup.object().shape({
-    name: yup.string().required(),
-    age: yup.number().required().positive().integer(),
-  });
+// Creazione di classi di errori personalizzate
+class CustomError extends Error {
+  constructor(message?: string) {
+    super(message);
+    this.name = "CustomError";
+  }
+}
 
-  return schema
-    .validate({
-      name,
-      age,
+function throwCustomError() {
+  throw new CustomError("This is a custom error");
+}
+
+// Gestione di errori asincroni con Promise
+function examplePromiseError() {
+  doAsyncOperation()
+    .then((result) => {
+      // Fai qualcosa con il risultato
     })
+    .catch((error) => {
+      // Gestione dell'errore
+      console.error(error);
+    });
 }
 
-const form = document.querySelector("form") as HTMLFormElement;
-const name = document.querySelector("#username") as HTMLInputElement;
-const age = document.querySelector("#age") as HTMLInputElement;
-const resultMessage = document.querySelector(
-  "#resul-message"
-) as HTMLParagraphElement;
+// Gestione di errori asincroni con async / await
+async function exampleAsyncAwaitError() {
+  try {
+    let result = await doAsyncOperation();
+    // Fai qualcosa con il risultato
+  } catch (error) {
+    // Gestione dell'errore
+    console.error(error);
+  }
+}
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const nameValue = name.value;
-  const ageValue = parseInt(age.value);
+// Controllo degli errori con l'operatore "nullish coalescing"
+function exampleNullishCoalescing() {
+  let riskyResult = riskyOperation();
+  let safeResult = riskyResult ?? "Default Value";
+}
 
-    validateUser(nameValue, ageValue).then(() => {
-      resultMessage.innerText = "Success";
-    }).catch(() => {
-    resultMessage.innerText = "validation failed";
-    });
-});
+// Controllo degli errori con l'operatore "optional chaining"
+function exampleOptionalChaining() {
+  let riskyObject = getRiskyObject();
+  let safeValue = riskyObject?.property?.value;
+}
