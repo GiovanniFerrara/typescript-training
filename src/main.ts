@@ -1,58 +1,49 @@
-// Record
-// L'utilità Record ci permette di creare un tipo di oggetto dove le chiavi delle proprietà sono stringhe specificate e i valori sono di un certo tipo.
-
-type CatOrDog = 'cat' | 'dog';
-
-type AnimalAges = Record<CatOrDog, number>;
-
-// Equivalentemente a:
-type AnimalAgesWithKeyValue = {
-  [key in 'cat' | 'dog']: number;
-};
-
-let ages: AnimalAgesWithKeyValue = { cat: 2, dog: 3 };
-
-// Required
-// L'utilità Required rende tutte le proprietà di un tipo obbligatorie.
-
-interface Employee {
+interface User {
+  id: string;
   name: string;
-  age?: number;
-  department: string;
 }
 
-type RequiredEmployee = Required<Employee>;
-let employee1: RequiredEmployee = {
-  name: "John",
-  age: 30, // ora questa proprietà è obbligatoria
-  department: "IT"
-};
+const users: User[] = [
+  { id: '1', name: 'User 1' },
+  { id: '2', name: 'User 2' },
+  { id: '3', name: 'User 3' },
+];
 
-// Readonly
-// L'utilità Readonly rende tutte le proprietà di un tipo di sola lettura.
 
-type ReadonlyEmployee = Readonly<Employee>;
-let employee2: ReadonlyEmployee = {
-  name: "John",
-  age: 30,
-  department: "IT"
-};
-// dipendente2.eta = 31; // Questa riga produrrebbe un errore TypeScript.
+interface UserMap {
+  [id: string]: User;
+}
 
-// Exclude
-// L'utilità Exclude esclude certi tipi da un altro tipo.
 
-type Animal = 'cat' | 'dog' | 'horse';
-type DomesticAnimal = Exclude<Animal, 'horse'>; // 'cat' | 'dog'
 
-// Extract
-// L'utilità Extract estrae certi tipi da un altro tipo.
+const userMap: UserMap = users.reduce((acc, user) => {
+  acc[user.id] = user;
+  return acc;
+}, {} as UserMap);
 
-type AnimalAgain = 'cat' | 'dog' | 'horse';
-type DomesticAnimalAgain = Extract<Animal, 'cat' | 'dog'>; // 'cat' | 'dog'
+userMap['1']; // { id: '1', name: 'User 1' }
+userMap['2']; // { id: '2', name: 'User 2' }
 
-// NonNullable
-// L'utilità NonNullable esclude null e undefined da un tipo.
+// refacciamolo usando Map
+const userMap2 = new Map<string, User>();
 
-type NullableString = string | null | undefined;
-type StringNonNullable = NonNullable<NullableString>; // string
+users.forEach(user => {
+  userMap2.set(user.id, user);
+});
+
+userMap2.get('1'); // { id: '1', name: 'User 1' }
+userMap2.get('2'); // { id: '2', name: 'User 2' }
+
+
+// Map spiegazione
+const map = new Map<'cat'| 'dog', number>();
+
+map.set('cat', 2);
+map.set('dog', 3);
+
+map.entries(); // [ ['cat', 2], ['dog', 3] ]
+map.keys(); // ['cat', 'dog']
+map.values(); // [2, 3]
+map.get('cat'); // 2
+map.get('dog'); // 3
+map.has('cat'); // true
