@@ -1,4 +1,4 @@
-##Esercizio 1: Tipizzazione di una funzione**
+##Esercizio 1: Tipizzazione di una funzione
 
 Considera la seguente funzione JavaScript:
 
@@ -10,7 +10,7 @@ function saluta(nome) {
 
 Converti questa funzione in TypeScript aggiungendo tipi appropriati.
 
-##Esercizio 2: Funzione con oggetto come parametro**
+##Esercizio 2: Funzione con oggetto come parametro
 
 Considera la seguente funzione JavaScript:
 
