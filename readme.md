@@ -1,73 +1,29 @@
-# Gestione degli errori in TypeScript
+# Progetto finale TypeScript: Previsioni meteo CLI
 
-La gestione degli errori è un aspetto fondamentale di qualsiasi applicazione di qualità. TypeScript, essendo un sovrainsieme di JavaScript, eredita diversi metodi di gestione degli errori da JavaScript e ne introduce anche di nuovi.
+In questo progetto finale, creerai un'applicazione da linea di comando (CLI) che richiede dati meteo da una API e li stampa nel terminale. Utilizzerai TypeScript insieme a due librerie esterne, `axios` per le richieste HTTP e `yargs` per l'elaborazione degli argomenti da linea di comando.
 
-## Try/Catch
+## Configurazione del progetto
 
-Try/Catch è un metodo standard per gestire gli errori in JavaScript e TypeScript. Qualsiasi errore che si verifica all'interno del blocco `try` viene catturato e può essere gestito nel blocco `catch`.
+Per iniziare, dovrai configurare un nuovo progetto TypeScript. Installa Node.js e npm se non lo hai già fatto, poi crea una nuova cartella per il tuo progetto. Inizializza npm con `npm init -y` e installa TypeScript con `npm install --save-dev typescript`. Crea un file `tsconfig.json` con `npx tsc --init`.
 
-```typescript
-try {
-  // Codice che potrebbe generare un errore
-} catch (error) {
-  // Gestione dell'errore
-}
-```
+Successivamente, installa le librerie necessarie per il progetto. Useremo `axios` per effettuare richieste HTTP e `yargs` per gestire gli argomenti della CLI.
 
-## Classi di errori personalizzate
+## Creazione del modulo API
 
-In TypeScript, puoi creare le tue classi di errori personalizzate per gestire specifici tipi di errori. Questo ti permette di creare errori più descrittivi e di gestire specifici tipi di errori in modo più efficace.
+Il tuo primo compito sarà creare un modulo per gestire la comunicazione con l'API OpenWeatherMap. Questo modulo dovrebbe esportare una funzione che accetta un nome di città come argomento e restituisce i dati meteo per quella città. 
 
-```typescript
-class MyError extends Error {
-  constructor(message?: string) {
-    super(message); // (1)
-    this.name = "MyError"; // (2)
-  }
-}
-```
+Ricorda di gestire correttamente gli errori in questa funzione - se la richiesta HTTP fallisce, la tua funzione dovrebbe catturare l'errore e non lasciare che si propaghi all'utente.
 
-## Promise.catch
+## Creazione del modulo CLI
 
-Quando si lavora con operazioni asincrone che restituiscono una Promise, gli errori possono essere catturati utilizzando il metodo `catch` della Promise.
+Dopo aver creato il modulo API, il tuo prossimo compito sarà creare un modulo per la CLI. Questo modulo dovrebbe utilizzare `yargs` per analizzare gli argomenti da linea di comando e chiamare la funzione del tuo modulo API in base a questi argomenti. 
 
-```typescript
-doSomethingAsync()
-  .then(result => {
-    // Gestisci il risultato
-  })
-  .catch(error => {
-    // Gestisci l'errore
-  });
-```
+La tua CLI dovrebbe supportare un argomento `--city`, che specifica la città per cui l'utente desidera ottenere le previsioni meteo. Dovrebbe stampare le previsioni meteo per quella città nel terminale.
 
-## Async/Await con Try/Catch
+## Compilazione e test
 
-Se stai utilizzando `async` e `await` per gestire le operazioni asincrone, puoi utilizzare `try`/`catch` per gestire gli errori asincroni.
+Dopo aver completato il tuo codice TypeScript, dovrai compilare il tuo progetto per trasformare il tuo codice TypeScript in JavaScript. Aggiungi uno script `build` al tuo file `package.json` per farlo.
 
-```typescript
-async function doSomethingAsync() {
-  try {
-    const result = await doAnotherAsyncThing();
-    // Gestisci il risultato
-  } catch (error) {
-    // Gestisci l'errore
-  }
-}
-```
+Infine, testa il tuo progetto per assicurarti che funzioni correttamente. Dovresti essere in grado di eseguire il tuo script compilato con `node`, passare l'argomento `--city` e vedere le previsioni meteo per la città specificata stampate nel terminale.
 
-## Operatore di Coalescenza Nullish (`??`)
-
-Questo operatore può essere utilizzato per gestire valori nulli o non definiti, fornendo un valore predefinito. Se l'espressione a sinistra è `null` o `undefined`, l'operatore restituirà l'espressione a destra, altrimenti restituirà l'espressione a sinistra.
-
-```typescript
-const value = possiblyNullValue ?? defaultValue;
-```
-
-## Operatore Optional Chaining (`?.`)
-
-Questo operatore consente di accedere in sicurezza alle proprietà annidate di un oggetto, restituendo `undefined` se qualsiasi proprietà intermedia è `null` o `undefined`.
-
-```typescript
-const value = obj?.prop?.subProp;
-```
+Buon coding! Ricorda, l'obiettivo di questo progetto è mettere in pratica le tue abilità TypeScript e familiarizzare con l'interazione con le API e l'elaborazione degli argomenti da linea di comando. Non preoccuparti se incontri ostacoli lungo la strada - l'importante è imparare e migliorare.
