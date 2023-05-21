@@ -1,4 +1,3 @@
-
 # File di Dichiarazione in TypeScript
 
 I file di dichiarazione in TypeScript sono uno strumento chiave per lavorare con librerie JavaScript esistenti. Questi file, con estensione `.d.ts`, descrivono la forma e i tipi dell'API JavaScript di una libreria. Non contengono alcuna implementazione e non vengono eseguiti; invece, forniscono informazioni al tuo editor e ai tuoi strumenti TypeScript su come lavorare con le librerie JavaScript.

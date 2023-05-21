@@ -7,6 +7,8 @@ if (!rootElement) {
 }
 
 function validateUser(name: string, age: number) {
+  // cliccando su yup.object().shape si apre la definizione di yup
+  // cliccando su yup.string().required() si apre la definizione di yup.string
   const schema = yup.object().shape({
     name: yup.string().required(),
     age: yup.number().required().positive().integer(),
