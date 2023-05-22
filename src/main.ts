@@ -1,22 +1,22 @@
 // Partial
-
+interface Name {
+  firstName: string;
+  lastName: string;
+}
 interface Employee {
-  name: string;
+  name: Name["firstName"]
   age: number;
   department: string;
 }
 
-let employee1: Partial<Employee> = {
-  name: "John",
-};
 
 // Pick
 
 type EmployeeNameAndAge = Pick<Employee, "name" | "age">;
 
 let employee2: EmployeeNameAndAge = {
-  name: "John",
   age: 30,
+  name: 'john'
 };
 
 // Omit
@@ -44,3 +44,22 @@ function getEmployee(id: string): Promise<Employee> {
 }
 
 getEmployee("1").then((employee) => console.log(employee));
+
+interface User {
+  id: string;
+  name: string;
+  surname: string;
+}
+
+// interface UserToUpdate{
+//   name?: string;
+//   surname?: string;
+// }
+
+type UserToUpdate = Partial<User>;
+
+type UserToUpdateWithoutId = Omit<User, 'id'>
+
+function updateUser(id: string, user: UserToUpdateWithoutId) {
+  user
+}
