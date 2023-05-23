@@ -1,82 +1,50 @@
-# Built-In TypeScript Types: Record, Required, Readonly, Exclude, Extract, NonNullable
+# Esercizi TypeScript: Manipolazione di Tipi e Interfacce
 
-## Record
+Il seguente documento contiene una serie di esercizi avanzati su TypeScript incentrati sulla manipolazione dei tipi. Utilizzeremo operatori built-in di TypeScript come `Omit`, `Partial`, `Required`, `Readonly` e il tipo `Nullable`.
 
-Il tipo di utilità Record in TypeScript ci permette di creare un tipo di oggetto dove le chiavi delle proprietà sono stringhe specificate e i valori sono di un certo tipo. Ad esempio:
+## Esercizio 1: Pilota
 
-```typescript
-type AnimalAges = Record<'cat' | 'dog', number>;
-let ages: AnimalAges = { cat: 2, dog: 3 };
-```
-
-In questo esempio, stiamo dicendo che il tipo `AnimalAges` è un oggetto con le chiavi specificate ('cat' e 'dog') e i valori di tipo `number`.
-
-## Required
-
-L'utilità Required in TypeScript rende tutte le proprietà di un tipo obbligatorie. Ad esempio:
+**Obiettivo:** Usa `Omit` e `Partial` per manipolare l'interfaccia `Driver`.
 
 ```typescript
-interface Employee {
-  name: string;
-  age?: number;
-  department: string;
+interface Driver {
+  id: string;
+  firstName: string;
+  lastName: string;
+  team: string;
+  championshipsWon: number;
 }
-
-type RequiredEmployee = Required<Employee>;
-let employee1: RequiredEmployee = {
-  name: "John",
-  age: 30, // ora questa proprietà è obbligatoria
-  department: "IT"
-};
 ```
+**Compito:** Creare un tipo `DriverFormFields` che rappresenta i campi di un form per creare o modificare un pilota. Questo tipo dovrebbe includere tutte le proprietà dell'interfaccia `Driver`, tranne `id`, e tutte le proprietà dovrebbero essere facoltative.
 
-In questo esempio, stiamo creando un nuovo tipo `RequiredEmployee` che rende tutte le proprietà dell'interfaccia `Employee` obbligatorie. Quindi, anche se `age` era opzionale in `Employee`, è obbligatoria in `RequiredEmployee`.
+## Esercizio 2: Automobile
 
-## Readonly
-
-L'utilità Readonly in TypeScript rende tutte le proprietà di un tipo di sola lettura. Ad esempio:
+**Obiettivo:** Usa `Readonly` e `Nullable` per manipolare l'interfaccia `Car`.
 
 ```typescript
-type ReadonlyEmployee = Readonly<Employee>;
-let employee2: ReadonlyEmployee = {
-  name: "John",
-  age: 30,
-  department: "IT"
-};
-// employee2.age = 31; // Questa riga risulterebbe in un errore TypeScript.
+interface Car {
+  id: string;
+  model: string;
+  horsepower: number;
+  team: string;
+  driver: string;
+}
 ```
 
-In questo esempio, stiamo creando un nuovo tipo `ReadonlyEmployee` che rende tutte le proprietà dell'interfaccia `Employee` di sola lettura. Quindi, non possiamo cambiare il valore di `age` dopo che è stato impostato.
+**Compito:** Creare un tipo `ImmutableCar` in cui tutte le proprietà di `Car` sono in sola lettura. Inoltre, il campo `driver` dovrebbe essere nullable, per rappresentare il fatto che una macchina potrebbe non avere un pilota assegnato.
 
-## Exclude
+## Esercizio 3: Team di Formula 1
 
-L'utilità Exclude in TypeScript esclude certi tipi da un altro tipo. Ad esempio:
+**Obiettivo:** Usa `Required`, `Omit` e `Partial` per manipolare l'interfaccia `Team`.
 
 ```typescript
-type Animal = 'cat' | 'dog' | 'horse';
-type DomesticAnimal = Exclude<Animal, 'horse'>; // 'cat' | 'dog'
+interface Team {
+  id?: string;
+  name: string;
+  foundingYear: number;
+  headquarters: string;
+  championshipsWon: number;
+}
 ```
 
-In questo esempio, stiamo creando un nuovo tipo `DomesticAnimal` che include solo i tipi in `Animal` che non sono 'horse'.
-
-## Extract
-
-L'utilità Extract in TypeScript estrae certi tipi da un altro tipo. Ad esempio:
-
-```typescript
-type AnimalAgain = 'cat' | 'dog' | 'horse';
-type DomesticAnimalAgain = Extract<Animal, 'cat' | 'dog'>; // 'cat' | 'dog'
-```
-
-In questo esempio, stiamo creando un nuovo tipo `DomesticAnimalAgain` che include solo i tipi in `Animal` che sono anche 'cat' o 'dog'.
-
-## NonNullable
-
-L'utilità NonNullable in TypeScript esclude `null` e `undefined` da un tipo. Ad esempio:
-
-```typescript
-type NullableString = string | null | undefined;
-type String = NonNullable<NullableString>; // string
-```
-
-In questo esempio, stiamo creando un nuovo tipo `String` che include solo i tipi in `NullableString` che non sono `null` o `undefined`. Quindi, il tipo
+**Compito:** Creare un tipo `TeamFormFields` che rappresenta i campi di un form per creare o modificare una squadra. Questo tipo dovrebbe includere tutte le proprietà dell'interfaccia `Team`, tranne `id`, e tutte le proprietà dovrebbero essere obbligatorie.
