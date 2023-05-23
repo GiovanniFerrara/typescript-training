@@ -3,14 +3,18 @@
  * Una funzione generica è una funzione che può lavorare con qualsiasi tipo di dati.
  * In questo caso, il tipo T rappresenta qualsiasi tipo di dato.
  */
-function genericFunction<T>(arg: T): T {
+function genericResult<T>(arg: T): T {
   // Questa funzione restituisce semplicemente l'argomento che riceve
   return arg;
 }
 
-const genericResult = genericFunction<string>('Hello World!')
 
-genericResult.split('') // OK
+// prima cosa deduce il tipo di dato passato alla funzione come primo argomento
+// const genericResult = logger(3443);
+
+// function logger(arg: number): number {
+//   return arg;
+// }
 
 /**
 * Array Generico
