@@ -1,10 +1,11 @@
-# Esercizi TypeScript: Manipolazione di Tipi e Interfacce
+# Esercizio TypeScript: Generics e Array.reduce
 
-Il seguente documento contiene una serie di esercizi avanzati su TypeScript incentrati sulla manipolazione dei tipi. Utilizzeremo operatori built-in di TypeScript come `Omit`, `Partial`, `Required`, `Readonly` e il tipo `Nullable`.
+## Esercizio: Implementa la funzione `sort`
 
-## Esercizio 1: Pilota
+**Obiettivo:** Crea una funzione `sort` ordina un array di oggetti in base a una chiave specificata.
+La funzione accettera come parametri un array di oggetti e una funzione 
 
-**Obiettivo:** Usa `Omit` e `Partial` per manipolare l'interfaccia `Driver`.
+**Esempio di utilizzo:**
 
 ```typescript
 interface Driver {
@@ -12,39 +13,50 @@ interface Driver {
   firstName: string;
   lastName: string;
   team: string;
-  championshipsWon: number;
 }
+
+const drivers: Driver[] = [
+  { id: '1', firstName: 'Lewis', lastName: 'Hamilton', team: 'Mercedes' },
+  { id: '2', firstName: 'Max', lastName: 'Verstappen', team: 'Red Bull Racing' },
+  // ...
+];
+
+// Ordina i piloti per nome
+const sortedDrivers = sort(drivers, (driver) => driver.lastName);
 ```
-**Compito:** Creare un tipo `DriverFormFields` che rappresenta i campi di un form per creare o modificare un pilota. Questo tipo dovrebbe includere tutte le proprietà dell'interfaccia `Driver`, tranne `id`, e tutte le proprietà dovrebbero essere facoltative.
 
-## Esercizio 2: Automobile
+**Suggerimenti:**
 
-**Obiettivo:** Usa `Readonly` e `Nullable` per manipolare l'interfaccia `Car`.
+- Usa il metodo `Array.sort` per ordinare l'array
+
+## Esercizio: Implementa la funzione mapAndFilter usando Array.reduce
+
+**Obiettivo:** Crea una funzione `mapAndFilter` che accetta un array di oggetti e una funzione di mapping e una funzione di filtro.
+La funzione dovrebbe ritornare i valori l'oggetto driver modificato in modo tale da ritornare fullName anzichè firstName e lastName.
+E in più dovrebbe escludere i piloti che non hanno un firstName definito.
+
+**Esempio di utilizzo:**
 
 ```typescript
-interface Car {
+interface Driver {
   id: string;
-  model: string;
-  horsepower: number;
+  firstName?: string;
+  lastName: string;
   team: string;
-  driver: string;
 }
+
+const drivers: Driver[] = [
+  { id: '1', firstName: 'Lewis', lastName: 'Hamilton', team: 'Mercedes' },
+  { id: '2', firstName: 'Max', lastName: 'Verstappen', team: 'Red Bull Racing' },
+  {id: '3', lastName: 'Vettel', team: 'Aston Martin'},
+];
+
+// Filtra i piloti per nome e cognome
+const filteredDrivers = mapAndFilter(drivers); // [{ id: '1', fullName: 'Lewis Hamilton', team: 'Mercedes' }, { id: '2', fullName: 'Max Verstappen', team: 'Red Bull Racing' }]
 ```
 
-**Compito:** Creare un tipo `ImmutableCar` in cui tutte le proprietà di `Car` sono in sola lettura. Inoltre, il campo `driver` dovrebbe essere nullable, per rappresentare il fatto che una macchina potrebbe non avere un pilota assegnato.
+**Suggerimenti:**
 
-## Esercizio 3: Team di Formula 1
+- Non avrai bisogno di usare generics in questo esercizio
 
-**Obiettivo:** Usa `Required`, `Omit` e `Partial` per manipolare l'interfaccia `Team`.
 
-```typescript
-interface Team {
-  id?: string;
-  name: string;
-  foundingYear: number;
-  headquarters: string;
-  championshipsWon: number;
-}
-```
-
-**Compito:** Creare un tipo `TeamFormFields` che rappresenta i campi di un form per creare o modificare una squadra. Questo tipo dovrebbe includere tutte le proprietà dell'interfaccia `Team`, tranne `id`, e tutte le proprietà dovrebbero essere obbligatorie.
