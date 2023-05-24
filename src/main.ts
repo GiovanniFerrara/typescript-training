@@ -21,6 +21,15 @@ function throwCustomError() {
   throw new CustomError("This is a custom error");
 }
 
+try{
+  throwCustomError();
+} catch (error) {
+  if (error instanceof CustomError) {
+    // Gestione dell'errore
+    console.error(error);
+  }
+}
+
 // Gestione di errori asincroni con Promise
 function examplePromiseError() {
   doAsyncOperation()
